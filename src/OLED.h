@@ -22,6 +22,9 @@ public:
     bool any();
     void set_button_flag();
 
+    void beep();
+    void alarm();
+
 private:
     Adafruit_SH1107 * display;
     Buzzer* buzzer;

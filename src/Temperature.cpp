@@ -46,8 +46,9 @@ void Temperature::start_reading() {
 void Temperature::check_end_reading() {
     if (ds->getPowerMode()) {
         if (ds->check_power_mode()) {
-            calc_temp();
-            reading = false;
+            // This has no use
+            // calc_temp();
+            // reading = false;
         }
     } else {
         if  (millis() - last >= pause) {

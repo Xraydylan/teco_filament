@@ -33,8 +33,9 @@ void OLED::update() {
     ButtonC.update();
 
     if (any()) {
-        buzzer->beep();
+        beep();
     }
+    buzzer->update();
 }
 
 void OLED::print(String data, int line) {
@@ -95,6 +96,14 @@ bool OLED::any() {
 
 void OLED::set_button_flag() {
     button_flag = true;
+}
+
+void OLED::beep() {
+    buzzer->beep();
+}
+
+void OLED::alarm() {
+    buzzer->alarm();
 }
 
 

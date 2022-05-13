@@ -55,6 +55,7 @@ void FOC::warmup_state() {
     int rst = warmup->update();
 
     if (rst == 1) {
+        oled->alarm();
         drying->start(*selected);
         state = 3;
     } else if (rst == 2) {
@@ -66,6 +67,7 @@ void FOC::drying_state() {
     int rst = drying->update();
 
     if (rst) {
+        oled->alarm();
         begin();
     }
 }
