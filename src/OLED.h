@@ -4,8 +4,10 @@
 #include "pins.h"
 #include "DButton.h"
 #include "Buzzer.h"
-#include "Adafruit_GFX.h"
-#include "Adafruit_SH110X.h"
+
+#include <U8g2lib.h>
+#include <SPI.h>
+#include <Wire.h>
 
 class OLED {
 public:
@@ -21,22 +23,28 @@ public:
     bool pressed_C();
     bool any();
     void set_button_flag();
+    void reset();
 
     void beep();
     void alarm();
 
 private:
-    Adafruit_SH1107 * display;
+    U8G2_SH1106_128X64_NONAME_1_HW_I2C * display;
     Buzzer* buzzer;
 
     bool button_flag = false;
 
     static const int lines = 8;
+    const int pix_count = 7;
+    const int pix_separation = 2;
+
     String show[lines];
 
     DButton ButtonA;
     DButton ButtonB;
     DButton ButtonC;
+
+    int line_to_pixel(int line);
 };
 
 

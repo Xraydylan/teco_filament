@@ -77,7 +77,8 @@ void Start_Menu::display_selection() {
 
 void Start_Menu::draw_preset_name() {
     oled->print(preset.list[index].name, 3);
-    oled->print("(A = Select; B = Up; C = Down/Cancel)", 6);
+    oled->print("(A = Select; B = Up;", 5);
+    oled->print("C = Down/Cancel)", 6);
     oled->draw();
 }
 

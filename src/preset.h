@@ -5,6 +5,7 @@
 
 class Preset_data {
 public:
+    // Duration is in Hours
     Preset PLA = {"PLA", 5, 45};
     Preset ABS = {"ABS", 5, 80};
     Preset Nylon = {"Nylon", 2, 80};

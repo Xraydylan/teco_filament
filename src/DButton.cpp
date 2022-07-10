@@ -11,7 +11,8 @@ DButton::DButton(int pin) {
 void DButton::setup(int pin) {
     button.attach(pin, INPUT_PULLUP);
     button.interval(15);
-    button.setPressedState(LOW);
+    //button.setPressedState(LOW);
+    button.setPressedState(HIGH);
 }
 
 void DButton::update() {

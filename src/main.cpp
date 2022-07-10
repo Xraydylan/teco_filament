@@ -13,8 +13,3 @@ void setup() {
 void loop() {
     app->update();
 }
-
-
-
-
-

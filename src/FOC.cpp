@@ -8,7 +8,9 @@ FOC::FOC() {
     warmup = new Warmup(*oled, *temperature, *relay);
     drying = new Drying(*oled, *temperature, *relay);
 
+    delay(50);
     oled->begin();
+    temperature->begin();
 }
 
 void FOC::begin() {

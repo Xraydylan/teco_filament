@@ -1,6 +1,7 @@
 #include "Temperature.h"
 
 Temperature::Temperature() {
+    delay(250);
     ds = new DS18B20(WIRE_PIN);
 }
 
@@ -8,13 +9,19 @@ void Temperature::begin() {
     // Setup resolution
     // Resolution: 9, 10, 11, or 12 bit corresponding to increments of 0.5°C, 0.25°C, 0.125°C, 0.0625°C
     // Delay 93.75, 187.5, 375, 750 ms
-    ds->setResolution(resolution);
+    set_resolution();
     pause = get_delay();
 }
 
 void Temperature::update() {
     if (reading) check_end_reading();
     else start_reading();
+}
+
+void Temperature::set_resolution() {
+    while (ds->selectNext()) {
+        ds->setResolution(resolution);
+    }
 }
 
 
@@ -46,9 +53,9 @@ void Temperature::start_reading() {
 void Temperature::check_end_reading() {
     if (ds->getPowerMode()) {
         if (ds->check_power_mode()) {
-            // This has no use
-            // calc_temp();
-            // reading = false;
+            // I am a fucking idiot
+            calc_temp();
+            reading = false;
         }
     } else {
         if  (millis() - last >= pause) {
@@ -59,9 +66,45 @@ void Temperature::check_end_reading() {
 }
 
 void Temperature::calc_temp() {
-    temp_array[slot] = ds->stop_get_TempC();
+    float temp = ds->stop_get_TempC();
+
+    if (single_error_detection(temp)) {
+        return;
+    }
+    error_check[slot] = false;
+
+    temp_array[slot] = temp;
     if (slot) {
         temperature = (temp_array[0] + temp_array[1]) / 2;
     }
     slot = !slot;
+
+}
+
+bool Temperature::single_error_detection(float temp) {
+    float previous = temp_array[slot];
+    float delta = abs(temp - previous);
+
+    // Check for init temperature
+    if (temperature == INIT_TEMP) {
+        return false;
+    }
+
+    // Check for small jump in temperature
+    if (delta < temp_jump_delta) {
+        return false;
+    }
+
+    // Check for not error code
+    if (temperature != CONNECTION_ERROR_CODE) {
+        return false;
+    }
+
+    // Check if last value was also error
+    if (error_check[slot]) {
+        return false;
+    }
+
+    error_check[slot] = true;
+    return true;
 }

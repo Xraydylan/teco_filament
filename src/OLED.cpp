@@ -5,25 +5,25 @@ OLED::OLED() {
 }
 
 void OLED::begin() {
+    pinMode(OLED_RESET, OUTPUT);
+
     ButtonA.setup(ButtonPinA);
     ButtonB.setup(ButtonPinB);
     ButtonC.setup(ButtonPinC);
 
     buzzer = new Buzzer(Buzzer_Pin);
 
-    display = new Adafruit_SH1107(64, 128, &Wire);
-    delay(100);
+    reset();
+    display = new U8G2_SH1106_128X64_NONAME_1_HW_I2C(U8G2_R0);
+    display->begin();
+    delay(50);
 
-    display->begin(0x3C, true);
-    display->display();
-    delay(500);
-    display->clearDisplay();
-    display->display();
+}
 
-    display->setRotation(1);
-    display->setTextSize(1);
-    display->setTextColor(SH110X_WHITE);
-    display->setCursor(0,0);
+void OLED::reset() {
+    digitalWrite(OLED_RESET, LOW);
+    delay(200);
+    digitalWrite(OLED_RESET, HIGH);
 }
 
 void OLED::update() {
@@ -54,16 +54,18 @@ void OLED::clear() {
         i = "";
     }
     display->clearDisplay();
-    display->display();
 }
 
 void OLED::draw() {
-    display->clearDisplay();
-    display->setCursor(0,0);
-    for (const auto & i : show) {
-        display->println(i);
-    }
-    display->display();
+    display->firstPage();
+
+    do {
+        display->setFont(u8g2_font_profont11_mr);
+
+        for (int i = 0; i < lines; i++) {
+            display->drawStr(0, line_to_pixel(i), show[i].c_str());
+        }
+    } while ( display->nextPage() );
 }
 
 bool OLED::pressed_A() {
@@ -106,4 +108,6 @@ void OLED::alarm() {
     buzzer->alarm();
 }
 
-
+int OLED::line_to_pixel(int line) {
+    return (1+line) * (pix_count + pix_separation);
+}
