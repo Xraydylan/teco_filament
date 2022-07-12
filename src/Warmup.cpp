@@ -44,9 +44,9 @@ void Warmup::start(Preset &selected) {
     selected_preset = &selected;
     start_time = millis();
     duration_ms = h_to_millis(warmup_duration);
-    target_real = selected_preset->temperature + pre_heat_offset;
+    target_real = selected_preset->temperature;
     pre_heat_target = target_real + pre_heat_offset;
-    target = pre_heat_target;
+    set_new_target(pre_heat_target);
 
     display_warmup();
 }
@@ -70,6 +70,7 @@ void Warmup::display_ready() {
     state = 4;
     oled->clear();
     oled->print("Ready! Press Any Button!", 0);
+    oled->alarm();
     screen_ready();
 }
 
@@ -78,7 +79,7 @@ void Warmup::screen_warmup() {
     if (temperature >= pre_heat_target) {
         heater->off();
         warmup = false;
-        target = target_real;
+        set_new_target(target_real);
         display_cooldown();
     }
     check_cancel();

@@ -12,7 +12,14 @@ void Buzzer::beep() {
 
 void Buzzer::alarm() {
     time_set(duration_alarm);
+    alarm_on = true;
     start();
+}
+
+void Buzzer:: stop_alarm() {
+    if (!alarm_on) return;
+    alarm_on = false;
+    stop();
 }
 
 void Buzzer::update() {

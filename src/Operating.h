@@ -43,9 +43,11 @@ protected:
     void display_cancel();
     void draw_stats();
     bool determine_end();
-    bool determine_relay_state();
+    bool determine_heater_state();
     void operation(bool stats = true);
     void check_cancel();
+
+    void set_new_target(float new_target);
 };
 
 

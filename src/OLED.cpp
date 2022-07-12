@@ -93,7 +93,9 @@ bool OLED::any() {
     if (button_flag) {
         return false;
     }
-    return pressed_A() || pressed_B() || pressed_C();
+    bool flag = pressed_A() || pressed_B() || pressed_C();
+    if (flag) buzzer->stop_alarm();
+    return flag;
 }
 
 void OLED::set_button_flag() {

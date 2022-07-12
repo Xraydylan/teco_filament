@@ -18,7 +18,7 @@ private:
     DS18B20* ds;
 
     // select fitting resolution
-    int resolution = 11;
+    int resolution = 10;
     bool reading = false;
     bool slot = false;
     unsigned long int last;

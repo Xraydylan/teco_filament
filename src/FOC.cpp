@@ -3,7 +3,7 @@
 FOC::FOC() {
     temperature = new Temperature();
 
-    heater = new Heater();
+    heater = new Heater(*temperature);
 
     oled = new OLED();
     start_menu = new Start_Menu(*oled);
@@ -62,7 +62,6 @@ void FOC::warmup_state() {
     int rst = warmup->update();
 
     if (rst == 1) {
-        oled->alarm();
         drying->start(*selected);
         state = 3;
     } else if (rst == 2) {

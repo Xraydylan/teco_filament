@@ -10,6 +10,7 @@ public:
     void beep();
     void alarm();
     void update();
+    void stop_alarm();
 private:
     int duration_beep = 50;
     int duration_alarm = 1000;
@@ -17,6 +18,7 @@ private:
     int buzzer;
 
     bool active = false;
+    bool alarm_on = false;
 
     void start();
     void stop();

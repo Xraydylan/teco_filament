@@ -8,7 +8,7 @@ void Drying::start(Preset & selected) {
     selected_preset = &selected;
     start_time = millis();
     duration_ms = (unsigned long int)(selected_preset->duration * 60 * 60 * 1000);
-    target = selected_preset->temperature;
+    set_new_target(selected_preset->temperature);
     display_drying();
 }
 

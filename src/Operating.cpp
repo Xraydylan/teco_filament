@@ -23,9 +23,9 @@ void Operating::read_temp() {
     temperature = temp->get_temperature();
 }
 
-bool Operating::determine_relay_state() {
+bool Operating::determine_heater_state() {
     if (heater->get_state()) {
-        return (temperature <= target + margin);
+        return (temperature <= target);
     }
     return temperature <= target - margin;
 }
@@ -34,7 +34,6 @@ bool Operating::determine_end() {
     delta = millis() - start_time;
     return delta >= duration_ms;
 }
-
 
 void Operating::display_cancel() {
     state = 1;
@@ -96,10 +95,15 @@ void Operating::operation(bool stats) {
         return;
     }
     read_temp();
-    bool relay_state = determine_relay_state();
+    bool relay_state = determine_heater_state();
     heater->set(relay_state);
     if (stats) {
         draw_stats();
     }
     check_cancel();
+}
+
+void Operating::set_new_target(float new_target) {
+    target = new_target;
+    heater->set_new_target(new_target);
 }
