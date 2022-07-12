@@ -14,7 +14,7 @@
 
 #include "preset_struct.h"
 
-class Operating {
+class Operating : public Waiter {
 public:
     Operating(OLED &display, Temperature &temp, Relay &relay_ext);
     static unsigned long int h_to_millis(float num);
@@ -35,8 +35,6 @@ protected:
     unsigned long int start_time = 0;
     unsigned long int delta = 0;
 
-    unsigned long int last = 0;
-
     void read_temp();
     int screen_cancel();
     int screen_end();
@@ -47,7 +45,6 @@ protected:
     bool determine_relay_state();
     void operation(bool stats = true);
     void check_cancel();
-    bool check_update();
 };
 
 

@@ -1,9 +1,11 @@
 #include "Operating.h"
 
-Operating::Operating(OLED &oled_ext, Temperature &temp_ext, Relay &relay_ext) {
+Operating::Operating(OLED &oled_ext, Temperature &temp_ext, Heater &heater_ext) : Waiter() {
     oled = &oled_ext;
     temp = &temp_ext;
     relay = &relay_ext;
+
+    time_set(update_delay);
 }
 
 void Operating::draw_stats() {
@@ -85,23 +87,19 @@ void Operating::check_cancel() {
 }
 
 void Operating::operation(bool stats) {
-    if (!check_update()) {
+    if (!time_check()) {
         return;
     }
-    last = millis();
+    time_reset();
     if (determine_end()) {
         display_end();
         return;
     }
     read_temp();
     bool relay_state = determine_relay_state();
-    relay->set(relay_state);
+    heater->set(relay_state);
     if (stats) {
         draw_stats();
     }
     check_cancel();
-}
-
-bool Operating::check_update() {
-    return (millis() - last >= update_delay);
 }

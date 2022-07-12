@@ -2,8 +2,9 @@
 #define TECO_FILAMENT_BUZZER_H
 
 #include <Arduino.h>
+#include "Waiter.h"
 
-class Buzzer {
+class Buzzer : public Waiter {
 public:
     Buzzer(int);
     void beep();
@@ -15,8 +16,7 @@ private:
     int freq = 1000;
     int buzzer;
 
-    int wait_time = 0;
-    unsigned long int last = 0;
+    bool active = false;
 
     void start();
     void stop();

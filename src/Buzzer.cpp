@@ -1,29 +1,35 @@
 #include "Buzzer.h"
 
-Buzzer::Buzzer(int pin) {
+Buzzer::Buzzer(int pin) : Waiter() {
     buzzer = pin;
     pinMode(buzzer, OUTPUT);
 }
 
 void Buzzer::beep() {
-    wait_time = duration_beep;
+    time_set(duration_beep);
     start();
 }
 
 void Buzzer::alarm() {
-    wait_time = duration_alarm;
+    time_set(duration_alarm);
     start();
 }
 
 void Buzzer::update() {
-    if (millis() - last >= wait_time) stop();
+    if (!active) {
+        return;
+    }
+
+    if (time_check()) stop();
 }
 
 void Buzzer::start() {
-    last = millis();
+    time_reset();
     tone(buzzer, freq);
+    active = true;
 }
 
 void Buzzer::stop() {
     noTone(buzzer);
+    active = false;
 }
