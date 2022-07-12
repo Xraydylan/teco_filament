@@ -1,6 +1,6 @@
 #include "Drying.h"
 
-Drying::Drying(OLED &display, Temperature &temp, Relay &relayExt) : Operating(display, temp, relayExt) {
+Drying::Drying(OLED &display, Temperature &temp, Heater &heaterExt) : Operating(display, temp, heaterExt) {
 
 }
 

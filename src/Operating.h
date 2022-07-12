@@ -3,7 +3,7 @@
 
 #include "preset.h"
 #include "pins.h"
-#include "Relay.h"
+#include "Heater.h"
 #include "Temperature.h"
 #include "OLED.h"
 
@@ -12,16 +12,17 @@
  * 1: Cancel
 */
 
+#include "Waiter.h"
 #include "preset_struct.h"
 
 class Operating : public Waiter {
 public:
-    Operating(OLED &display, Temperature &temp, Relay &relay_ext);
+    Operating(OLED &display, Temperature &temp, Heater &heater_ext);
     static unsigned long int h_to_millis(float num);
 protected:
     OLED* oled;
     Temperature* temp;
-    Relay* relay;
+    Heater* heater;
 
     float margin = 1;
     int update_delay = 100;

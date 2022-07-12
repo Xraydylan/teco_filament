@@ -3,7 +3,7 @@
 Operating::Operating(OLED &oled_ext, Temperature &temp_ext, Heater &heater_ext) : Waiter() {
     oled = &oled_ext;
     temp = &temp_ext;
-    relay = &relay_ext;
+    heater = &heater_ext;
 
     time_set(update_delay);
 }
@@ -24,7 +24,7 @@ void Operating::read_temp() {
 }
 
 bool Operating::determine_relay_state() {
-    if (relay->get_state()) {
+    if (heater->get_state()) {
         return (temperature <= target + margin);
     }
     return temperature <= target - margin;
@@ -44,7 +44,7 @@ void Operating::display_cancel() {
 
 void Operating::display_end(int end_type) {
     state = 0;
-    relay->off();
+    heater->off();
     oled->clear();
     switch (end_type) {
         case 0:

@@ -1,7 +1,7 @@
 #include "Warmup.h"
 
 
-Warmup::Warmup(OLED &display, Temperature &temp, Relay &relayExt) : Operating(display, temp, relayExt) {
+Warmup::Warmup(OLED &display, Temperature &temp, Heater &heaterExt) : Operating(display, temp, heaterExt) {
 
 }
 
@@ -9,14 +9,14 @@ int Warmup::update() {
     int rst = 0;
     switch (state) {
         case 0:
-            relay->off();
+            heater->off();
             return screen_exceed();
             break;
         case 1:
             rst = screen_cancel();
             oled->set_button_flag();
             if (rst == 1) {
-                relay->off();
+                heater->off();
                 return 2;
             }
             if (rst == 2) {
@@ -76,7 +76,7 @@ void Warmup::display_ready() {
 void Warmup::screen_warmup() {
     operation();
     if (temperature >= pre_heat_target) {
-        relay->off();
+        heater->off();
         warmup = false;
         target = target_real;
         display_cooldown();

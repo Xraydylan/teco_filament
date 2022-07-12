@@ -11,7 +11,7 @@
 
 class Warmup : public Operating {
 public:
-    Warmup(OLED &display, Temperature &temp, Relay &relayExt);
+    Warmup(OLED &display, Temperature &temp, Heater &heaterExt);
     void start(Preset &selected);
     int update();
 private:

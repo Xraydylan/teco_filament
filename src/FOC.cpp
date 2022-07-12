@@ -2,11 +2,13 @@
 
 FOC::FOC() {
     temperature = new Temperature();
-    relay = new Relay();
+
+    heater = new Heater();
+
     oled = new OLED();
     start_menu = new Start_Menu(*oled);
-    warmup = new Warmup(*oled, *temperature, *relay);
-    drying = new Drying(*oled, *temperature, *relay);
+    warmup = new Warmup(*oled, *temperature, *heater);
+    drying = new Drying(*oled, *temperature, *heater);
 
     delay(50);
     oled->begin();
@@ -16,6 +18,7 @@ FOC::FOC() {
 void FOC::begin() {
     state = 1;
     start_menu->display();
+    heater->begin();
 }
 
 void FOC::update() {
@@ -34,6 +37,7 @@ void FOC::update() {
             break;
     }
     temperature->update();
+    heater->update();
     internal_delay();
 }
 
@@ -47,9 +51,10 @@ void FOC::start_state() {
     }
 }
 
+// Needs testing?
 void FOC::internal_delay() {
-    int delta = -1 * (int)(millis() - last);
-    delay(loop_delay - constrain(delta, -loop_delay, 0));
+    int delta = (int)(millis() - last);
+    delay(loop_delay - constrain(delta, 0, loop_delay));
     last = millis();
 }
 

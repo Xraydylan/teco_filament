@@ -14,7 +14,7 @@
 
 class Drying : public Operating {
 public:
-    Drying(OLED &display, Temperature &temp, Relay &relayExt);
+    Drying(OLED &display, Temperature &temp, Heater &heaterExt);
     void start(Preset & selected);
     int update();
 private:

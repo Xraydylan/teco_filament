@@ -4,11 +4,12 @@
 #include "preset_struct.h"
 
 #include "OLED.h"
-#include "Relay.h"
 #include "Temperature.h"
 #include "Start_Menu.h"
 #include "Warmup.h"
 #include "Drying.h"
+#include "Heater.h"
+#include "Waiter.h"
 
 class FOC {
 public:
@@ -21,14 +22,15 @@ private:
     Warmup* warmup;
     Drying* drying;
 
+    Heater* heater;
+
     Temperature* temperature;
-    Relay* relay;
 
     int state = 0;
     Preset* selected;
 
-    const int loop_delay = 5;
-    unsigned long int last = 0;
+    const int loop_delay = 10;
+    unsigned long last = 0;
 
     void start_state();
     void warmup_state();
