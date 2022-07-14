@@ -73,7 +73,6 @@ void FOC::drying_state() {
     int rst = drying->update();
 
     if (rst) {
-        oled->alarm();
         begin();
     }
 }

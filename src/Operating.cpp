@@ -50,10 +50,12 @@ void Operating::display_end(int end_type) {
             oled->print("Drying complete!", 0);
             oled->print("Remove Filament", 1);
             oled->print("(press any button)", 5);
+            oled->alarm();
             break;
         case 1:
             oled->print("Preheating time exceeded!", 1);
             oled->print("(press any button)", 5);
+            oled->alarm();
             break;
         default:
             break;
